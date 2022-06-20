@@ -1,0 +1,41 @@
+{
+  "name": "wordathon",
+  "version": "1.0.0",
+  "description": "Description * Wordathon is a spin on the viral word game Wordle. The game starts out in similar fashion, allowing the player six guesses to determine a secret 5-letter word. With each guess, the letter tiles will change color to give the player feedback about each guessed letter's presence in the secret word. Yellow tiles indicate the letter is in the secret word but placed in the wrong column. Green tiles indicate the letter is both in the secret word and placed in the right column. Dark gray tiles indicate the letter is not in the secret word at all. The user will only be allowed to guess valid words contained within the game's dictionary. * The player wins the round if they are able to guess the secret word before running out of guesses. The game doesn't end there, however. In the second round, the player will input guesses simultaneously on two unique boards! In other words, each guess will be submitted to both boards, and each board will provide feedback unique to its own secret word. If the player succeeds in guessing both secret words, the player will be sent to a final round with 4 unique boards.",
+  "main": "index.js",
+  "browserslist": [
+    "defaults"
+  ],
+  "scripts": {
+    "watch": "webpack --watch --mode=development",
+    "build": "webpack --mode=production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkwal/Wordathon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dkwal/Wordathon/issues"
+  },
+  "homepage": "https://github.com/dkwal/Wordathon#readme",
+  "dependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "babel-loader": "^8.2.5",
+    "core-js": "^3.23.1",
+    "css-loader": "^6.7.1",
+    "fs": "^0.0.1-security",
+    "mini-css-extract-plugin": "^2.6.1",
+    "regenerator-runtime": "^0.13.9",
+    "sass": "^1.52.3",
+    "sass-loader": "^13.0.0",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0"
+  }
+}

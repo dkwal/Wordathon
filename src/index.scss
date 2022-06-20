@@ -1,0 +1,10 @@
+// entry file for css
+
+// if need to add other style pages, do:
+@import './styles/reset.scss';
+@import './styles/board.scss';
+@import './styles/keyboard.scss';
+
+h1 {
+    text-align: center;
+}
