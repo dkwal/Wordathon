@@ -65,7 +65,8 @@ export function checkGuess(gameVars) {
 
     if (guessString === rightGuess.join("")) {
         alert("Correct! Passed level 1");
-        gameVars.guessesRemaining = 0;
+        // gameVars.guessesRemaining = 0;
+        switchGameBoards(gameVars);
         return;
     } else {
         gameVars.guessesRemaining -= 1;
@@ -87,6 +88,30 @@ export function checkGuess(gameVars) {
                 if (oldColor === 'yellow' && color !== 'green') return;
                 keyboardButtons[i].style.backgroundColor = color;
                 break;
+            }
+        }
+    }
+
+    function switchGameBoards(gameVars) {
+        console.log("switching boards");
+        gameVars.currentLevel += 1;
+        let boardName = "game-board-lvl-2";
+        if (gameVars.currentLevel === 2) {
+            gameVars.guessesRemaining = gameVars.lvl2Guesses;
+        } else if (gameVars.currentLevel === 3) {
+            gameVars.guessesRemaining = gameVars.lvl3Guesses;
+            boardName = "game-board-lvl-3";
+        }
+
+        for (let i = 0; i < gameVars.guessesRemaining; i++) {
+            let board = document.getElementById(boardName);
+            let rows = board.children;
+            for (let j = 0; j < rows.length; j++) {
+                let boxes = rows[j].children;
+                for (let k = 0; k < boxes.length; k++) {
+                    boxes[k].classList.remove("hidden-letter-box");
+                    boxes[k].classList.add("letter-box");
+                }
             }
         }
     }

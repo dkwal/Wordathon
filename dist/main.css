@@ -55,7 +55,7 @@ table {
   border-spacing: 0;
 }
 
-#game-board {
+#game-board-lvl-1 {
   display: flex;
   align-items: center;
   flex-direction: column;

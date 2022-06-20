@@ -23,11 +23,17 @@ readTextFiles("../winning-words.txt", "../guessable-words.txt").then((wordLists)
         }),
         guessesRemaining : LVL_1_GUESSES,
         currentGuess : [],
-        nextLetterIdx : 0
+        nextLetterIdx : 0,
+        currentLevel : 1,
+        lvl1Guesses: LVL_1_GUESSES,
+        lvl2Guesses: LVL_2_GUESSES,
+        lvl3Guesses: LVL_3_GUESSES
     }
     
     // initialize level 1 board
-    initBoard(LVL_1_GUESSES);
+    initBoard(LVL_1_GUESSES, 1);
+    initBoard(LVL_2_GUESSES, 2, true);
+    initBoard(LVL_3_GUESSES, 3, true);
     
     // add event listener for user input
     document.addEventListener("keydown", (e) => {
