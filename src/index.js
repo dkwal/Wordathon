@@ -4,7 +4,7 @@ import {getUniqueIndices} from "./scripts/util.js";
 import {initBoard} from "./scripts/board.js";
 import {insertLetter, deleteLetter, checkGuess} from "./scripts/game_logic.js";
 
-readTextFiles("../winning-words.txt", "../guessable-words.txt").then((wordLists) => {
+readTextFiles("https://github.com/dkwal/Wordathon/blob/main/winning-words.txt", "https://github.com/dkwal/Wordathon/blob/main/guessable-words.txt").then((wordLists) => {
     
     // constant game variables
     // need to make into object so we can pass by reference to game_logic functions
