@@ -10,8 +10,6 @@ export function insertLetter(gameVars, letter) {
         let rows = grids[i].children;
         let row = rows[rows.length - gameVars.guessesRemaining];
         let box = row.children[gameVars.nextLetterIdx];
-        console.log("Trying to output letter box");
-        console.log(box);
         box.textContent = letter;
         box.classList.add("filled-box");
     }
@@ -20,10 +18,15 @@ export function insertLetter(gameVars, letter) {
 }
 
 export function deleteLetter(gameVars) {
-    let row = document.getElementsByClassName("letter-row")[6 - gameVars.guessesRemaining];
-    let box = row.children[gameVars.nextLetterIdx - 1];
-    box.textContent = "";
-    box.classList.remove("filled-box");
+    let board = document.getElementById(`game-board-lvl-${gameVars.currentLevel}`);
+    let grids = board.children;
+    for (let i = 0; i < grids.length; i++) {
+        let rows = grids[i].children;
+        let row = rows[rows.length - gameVars.guessesRemaining];
+        let box = row.children[gameVars.nextLetterIdx - 1];
+        box.textContent = "";
+        box.classList.remove("filled-box");
+    }
     gameVars.currentGuess.pop();
     gameVars.nextLetterIdx -= 1;
 }
