@@ -4,25 +4,11 @@ export function insertLetter(gameVars, letter) {
     }
     letter = letter.toLowerCase();
 
-    let row = document.getElementsByClassName("letter-row")[6 - gameVars.guessesRemaining];
-    let box = row.children[gameVars.nextLetterIdx];
-    box.textContent = letter;
-    box.classList.add("filled-box");
-    gameVars.currentGuess.push(letter);
-    gameVars.nextLetterIdx += 1;
-}
-
-export function insertLetterLvl2(gameVars, letter) {
-    if (gameVars.nextLetterIdx === 5) {
-        return;
-    }
-    letter = letter.toLowerCase();
-
-    let board = document.getElementById("game-board-lvl-2");
+    let board = document.getElementById(`game-board-lvl-${gameVars.currentLevel}`);
     let grids = board.children;
     for (let i = 0; i < grids.length; i++) {
         let rows = grids[i].children;
-        let row = rows[gameVars.lvl2Guesses - gameVars.guessesRemaining];
+        let row = rows[rows.length - gameVars.guessesRemaining];
         let box = row.children[gameVars.nextLetterIdx];
         console.log("Trying to output letter box");
         console.log(box);

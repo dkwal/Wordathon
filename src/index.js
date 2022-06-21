@@ -2,7 +2,7 @@
 import {readTextFiles} from "./scripts/word_lists.js";
 import {getUniqueIndices} from "./scripts/util.js";
 import {initBoard} from "./scripts/board.js";
-import {insertLetter, insertLetterLvl2, deleteLetter, checkGuess} from "./scripts/game_logic.js";
+import {insertLetter, deleteLetter, checkGuess} from "./scripts/game_logic.js";
 
 readTextFiles("../src/textfiles/winning-words.txt", "../src/textfiles/guessable-words.txt").then((wordLists) => {
     
@@ -41,32 +41,21 @@ readTextFiles("../src/textfiles/winning-words.txt", "../src/textfiles/guessable-
             return;
         }
         let pressedKey = String(e.key);
-        if (gameVars.currentLevel === 1) {
-            if (pressedKey === "Backspace" && gameVars.nextLetterIdx !== 0) {
-                deleteLetter(gameVars);
-                return;
-            }
-        
-            if (pressedKey === "Enter") {
-                checkGuess(gameVars);
-                return;
-            }
-        
-            let found = pressedKey.match(/[a-z]/gi);
-            if (!found || found.length > 1) {
-                return;
-            } else {
-                insertLetter(gameVars, pressedKey);
-            }
+        if (pressedKey === "Backspace" && gameVars.nextLetterIdx !== 0) {
+            deleteLetter(gameVars);
+            return;
+        }
+    
+        if (pressedKey === "Enter") {
+            checkGuess(gameVars);
+            return;
+        }
+    
+        let found = pressedKey.match(/[a-z]/gi);
+        if (!found || found.length > 1) {
+            return;
         } else {
-            let found = pressedKey.match(/[a-z]/gi);
-            if (!found || found.length > 1) {
-                return;
-            } else {
-                insertLetterLvl2(gameVars, pressedKey);
-            }
+            insertLetter(gameVars, pressedKey);
         }
     });
-
-
 })
