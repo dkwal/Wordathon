@@ -66,6 +66,7 @@ export function checkGuess(gameVars) {
     if (guessString === rightGuess.join("")) {
         alert("Correct! Passed level 1");
         // gameVars.guessesRemaining = 0;
+        resetKeyboard();
         switchGameBoards(gameVars);
         return;
     } else {
@@ -92,19 +93,51 @@ export function checkGuess(gameVars) {
         }
     }
 
+    function resetKeyboard() {
+        let keyboardButtons = document.getElementsByClassName("keyboard-button");
+        console.log(keyboardButtons);
+        for (let i = 0; i < keyboardButtons.length; i++) {
+            console.log(keyboardButtons[i]);
+            keyboardButtons[i].removeAttribute("style");
+        }
+    }
+
     function switchGameBoards(gameVars) {
         console.log("switching boards");
-        gameVars.currentLevel += 1;
+
         let boardName = "game-board-lvl-2";
+        let oldBoardName = "game-board-lvl-1";
+        let oldNumGuesses = gameVars.lvl1Guesses;
+        gameVars.currentLevel += 1;
+        
         if (gameVars.currentLevel === 2) {
             gameVars.guessesRemaining = gameVars.lvl2Guesses;
         } else if (gameVars.currentLevel === 3) {
             gameVars.guessesRemaining = gameVars.lvl3Guesses;
+            oldBoardName = boardName;
+            oldNumGuesses = gameVars.lvl2Guesses;
             boardName = "game-board-lvl-3";
         }
+        
+        // hide the old board
+        let oldBoard = document.getElementById(oldBoardName);
+        for (let i = 0; i < oldNumGuesses; i++) {
+            let rows = oldBoard.children;
+            for (let j = 0; j < rows.length; j++) {
+                let boxes = rows[j].children;
+                for (let k = 0; k < boxes.length; k++) {
 
+                    boxes[k].classList.remove("letter-box");
+                    boxes[k].classList.add("hidden-letter-box");
+                    boxes[k].classList.remove("filled-box");
+                    boxes[k].textContent = "";
+                }
+            }
+        }
+
+        // show the new board
+        let board = document.getElementById(boardName);
         for (let i = 0; i < gameVars.guessesRemaining; i++) {
-            let board = document.getElementById(boardName);
             let rows = board.children;
             for (let j = 0; j < rows.length; j++) {
                 let boxes = rows[j].children;
