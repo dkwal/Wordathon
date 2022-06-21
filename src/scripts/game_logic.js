@@ -67,7 +67,10 @@ export function checkGuess(gameVars) {
         alert("Correct! Passed level 1");
         // gameVars.guessesRemaining = 0;
         resetKeyboard();
-        switchGameBoards(gameVars);
+        setTimeout( () => {
+            switchGameBoards(gameVars);
+            resetKeyboard();
+        }, 1250);
         return;
     } else {
         gameVars.guessesRemaining -= 1;
@@ -95,9 +98,7 @@ export function checkGuess(gameVars) {
 
     function resetKeyboard() {
         let keyboardButtons = document.getElementsByClassName("keyboard-button");
-        console.log(keyboardButtons);
         for (let i = 0; i < keyboardButtons.length; i++) {
-            console.log(keyboardButtons[i]);
             keyboardButtons[i].removeAttribute("style");
         }
     }
@@ -137,16 +138,20 @@ export function checkGuess(gameVars) {
 
         // show the new board
         let board = document.getElementById(boardName);
-        for (let i = 0; i < gameVars.guessesRemaining; i++) {
-            let rows = board.children;
-            for (let j = 0; j < rows.length; j++) {
-                let boxes = rows[j].children;
-                for (let k = 0; k < boxes.length; k++) {
-                    boxes[k].classList.remove("hidden-letter-box");
-                    boxes[k].classList.add("letter-box");
+        let grids = board.children;
+        for (let n = 0; n < grids.length; n++) {
+            let rows = grids[n].children;
+            for (let i = 0; i < gameVars.guessesRemaining; i++) {
+                for (let j = 0; j < rows.length; j++) {
+                    let boxes = rows[j].children;
+                    for (let k = 0; k < boxes.length; k++) {
+                        boxes[k].classList.remove("hidden-letter-box");
+                        boxes[k].classList.add("letter-box");
+                    }
                 }
             }
         }
+
     }
 
 }

@@ -9,7 +9,10 @@ export function initBoard(numGuesses, level, hidden = false) {
     }
 
     let numBoards = 2 ** (level - 1);
+    let boardTracker = 1;
     while(numBoards > 0) {
+        let grid = document.createElement("div");
+        grid.id = `grid-${boardTracker}`;
         for (let i = 0; i < numGuesses; i++) {
             let row = document.createElement("div");
             row.className = "letter-row";
@@ -23,8 +26,10 @@ export function initBoard(numGuesses, level, hidden = false) {
                 }
                 row.appendChild(box);
             }
-            board.appendChild(row);
+            grid.appendChild(row);
         }
+        board.appendChild(grid);
         numBoards -= 1;
+        boardTracker += 1;
     }
 }

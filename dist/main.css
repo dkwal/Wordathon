@@ -61,6 +61,11 @@ table {
   flex-direction: column;
 }
 
+#game-board-lvl-2 {
+  display: flex;
+  justify-content: center;
+}
+
 .letter-box {
   border: 2px solid gray;
   border-radius: 3px;
