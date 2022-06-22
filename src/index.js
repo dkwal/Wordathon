@@ -13,18 +13,20 @@ readTextFiles("../src/textfiles/winning-words.txt", "../src/textfiles/guessable-
     const LVL_1_GUESSES = 6;
     const LVL_2_GUESSES = 7;
     const LVL_3_GUESSES = 9;
-    
+    const SECRET_WORDS = getUniqueIndices(7, WINNING_WORDS.length).map((idx) => {
+        return WINNING_WORDS[idx];
+    });
     const gameVars = {
         winningWords : WINNING_WORDS,
         guessableWords : WINNING_WORDS.concat(GUESSABLE_WORDS),
-            
-        secretWords : getUniqueIndices(7, WINNING_WORDS.length).map((idx) => {
-            return WINNING_WORDS[idx];
-        }),
+        secretWordsLvl1 : SECRET_WORDS.slice(0, 1),
+        secretWordsLvl2 : SECRET_WORDS.slice(1, 3),
+        secretWordsLvl3 : SECRET_WORDS.slice(3),
         guessesRemaining : LVL_1_GUESSES,
         currentGuess : [],
         nextLetterIdx : 0,
         currentLevel : 1,
+        correctCount : 0,
         lvl1Guesses: LVL_1_GUESSES,
         lvl2Guesses: LVL_2_GUESSES,
         lvl3Guesses: LVL_3_GUESSES

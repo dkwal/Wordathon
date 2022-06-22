@@ -10,6 +10,31 @@
       display: flex;
       justify-content: center;
   }
+
+  #game-board-lvl-3 {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 45rem;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  #grid-1 {
+      padding: 3px;
+  }
+
+  #grid-2 {
+      padding: 3px;
+  }
+  
+  #grid-3 {
+      padding: 3px;
+  }
+  
+  #grid-4 {
+      padding: 3px;
+  }
   
   .letter-box {
     border: 2px solid gray;

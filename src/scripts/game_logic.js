@@ -32,9 +32,10 @@ export function deleteLetter(gameVars) {
 }
 
 export function checkGuess(gameVars) {
-    let row = document.getElementsByClassName("letter-row")[6 - gameVars.guessesRemaining];
+    console.log(gameVars.secretWordsLvl1);
+    console.log(gameVars.secretWordsLvl2);
+    console.log(gameVars.secretWordsLvl3);
     let guessString = '';
-    let rightGuess = gameVars.secretWords[0].split("");
     
     for (let i = 0; i < gameVars.currentGuess.length; i++) {
         guessString += gameVars.currentGuess[i];
@@ -49,49 +50,87 @@ export function checkGuess(gameVars) {
         alert("Not a valid word!");
         return;
     }
+    // let row = document.getElementsByClassName("letter-row")[6 - gameVars.guessesRemaining];
+    // let rightGuess = gameVars.secretWords[0].split("");
 
-    for (let j = 0; j < 5; j++) {
-        let letterColor = '';
-        let box = row.children[j];
-        let letter = gameVars.currentGuess[j];
-
-        let letterPosition = gameVars.secretWords[0].indexOf(gameVars.currentGuess[j]);
-
-        if (letterPosition === -1) {
-            letterColor = 'gray';
-        } else {
-            if (gameVars.currentGuess[j] === gameVars.secretWords[0][j]) {
-                letterColor = 'green';
-            } else {
-                letterColor = 'yellow';
+    let board = document.getElementById(`game-board-lvl-${gameVars.currentLevel}`);
+    let grids = board.children;
+    
+    let winners;
+    if (gameVars.currentLevel === 1) {
+        winners = gameVars.secretWordsLvl1;
+    } else if (gameVars.currentLevel === 2) {
+        winners = gameVars.secretWordsLvl2;
+    } else {
+        winners = gameVars.secretWordsLvl3;
+    }
+    
+    for (let i = 0; i < grids.length; i++) {
+        let rows = grids[i].children;
+        let row = rows[rows.length - gameVars.guessesRemaining];
+        let colors = ['gray', 'gray', 'gray', 'gray', 'gray'];
+        let winner = winners[i].slice();
+        
+        // loop through and change any correctly placed letters to green
+        // remove the letter from the word so it is not considered again
+        for (let j = 0; j < 5; j++) {
+            let letter = gameVars.currentGuess[j];
+            if (letter === winner[j]) {
+                colors[j] = 'green';
+                winner = winner.replace(letter, " ");
             }
         }
-        let delay = 250 * j;
-        setTimeout( () => {
-            box.style.backgroundColor = letterColor;
-            shadeKeyboard(letter, letterColor);
-        }, delay);
-    }
 
-    if (guessString === rightGuess.join("")) {
-        alert("Correct! Passed level 1");
-        // gameVars.guessesRemaining = 0;
-        setTimeout( () => {
-            switchGameBoards(gameVars);
-            resetKeyboard();
-        }, 1250);
-        return;
-    } else {
-        gameVars.guessesRemaining -= 1;
-        gameVars.currentGuess = [];
-        gameVars.nextLetterIdx = 0;
-        
-        if (gameVars.guessesRemaining === 0) {
-            alert("Out of guesses, game over");
-            alert(`The secret word was ${rightGuess.join("")}`);
+        // loop again and change any remaining letters in the word to yellow
+        // remove the letter from the word
+        for (let j = 0; j < 5; j++) {
+            let letter = gameVars.currentGuess[j];
+            if (colors[j] !== 'green' && winner.includes(letter)) {
+                colors[j] = 'yellow';
+                winner = winner.replace(letter, " ");
+            }
+        }
+
+        for (let j = 0; j < 5; j++) {
+            let delay = 250 * j;
+            let box = row.children[j];
+            setTimeout( () => {
+                box.style.backgroundColor = colors[j];
+                shadeKeyboard(gameVars.currentGuess[j], colors[j]);
+            }, delay);
+        }
+
+        if (guessString === winners[i]) {
+            // stopInputOnGrid();
+            // prevent the same word from being guessed again
+            winners[i] = "#";
+            gameVars.correctCount += 1;
+        }
+
+        if (gameVars.correctCount === 2 ** (gameVars.currentLevel - 1)) {
+            if (gameVars.currentLevel === 3) {
+                alert("You beat the game!");
+                return;
+            } else {
+                alert("Well done! You're moving on to the next level!");
+            }
+            setTimeout( () => {
+                switchGameBoards(gameVars);
+                resetKeyboard();
+            }, 1250);
+            return;
         }
     }
+    gameVars.guessesRemaining -= 1;
+    gameVars.currentGuess = [];
+    gameVars.nextLetterIdx = 0;
+
+    if (gameVars.guessesRemaining === 0) {
+        alert("Out of guesses, game over");
+        alert(`The words were ${winners}`);
+    }
 }
+    
 
 function shadeKeyboard(letter, color) {
     let keyboardButtons = document.getElementsByClassName("keyboard-button");
@@ -162,7 +201,8 @@ function switchGameBoards(gameVars) {
         }
     }
 
-    // reset nextLetterIdx and currentGuess
+    // reset game variables
     gameVars.nextLetterIdx = 0;
     gameVars.currentGuess = [];
+    gameVars.correctCount = 0;
 }
