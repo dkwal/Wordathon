@@ -59,11 +59,13 @@ table {
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-top: 10px;
 }
 
 #game-board-lvl-2 {
   display: flex;
   justify-content: center;
+  margin-top: 10px;
 }
 
 #game-board-lvl-3 {
@@ -73,6 +75,7 @@ table {
   width: 45rem;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 10px;
 }
 
 #grid-1 {
@@ -95,10 +98,10 @@ table {
   border: 2px solid gray;
   border-radius: 3px;
   margin: 2px;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  height: 3rem;
-  width: 3rem;
+  height: 2.5rem;
+  width: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -137,6 +140,13 @@ table {
   text-transform: uppercase;
 }
 
+nav {
+  background-color: #333;
+}
+
 h1 {
+  font-size: 24px;
   text-align: center;
+  padding: 15px;
+  color: white;
 }

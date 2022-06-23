@@ -5,6 +5,13 @@
 @import './styles/board.scss';
 @import './styles/keyboard.scss';
 
+nav {
+    background-color: #333;
+}
+
 h1 {
+    font-size: 24px;
     text-align: center;
+    padding: 15px;
+    color: white
 }

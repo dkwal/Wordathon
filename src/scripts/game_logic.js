@@ -32,9 +32,6 @@ export function deleteLetter(gameVars) {
 }
 
 export function checkGuess(gameVars) {
-    console.log(gameVars.secretWordsLvl1);
-    console.log(gameVars.secretWordsLvl2);
-    console.log(gameVars.secretWordsLvl3);
     let guessString = '';
     
     for (let i = 0; i < gameVars.currentGuess.length; i++) {
@@ -111,7 +108,9 @@ export function checkGuess(gameVars) {
             let box = row.children[j];
             setTimeout( () => {
                 box.style.backgroundColor = guessColors[j];
-                shadeKeyboard(letter, keyboardColors[j], gameVars.currentLevel);
+                if (i === grids.length - 1) {
+                    shadeKeyboard(letter, keyboardColors[j], gameVars.currentLevel);
+                }
             }, delay);
         }
 
@@ -152,6 +151,7 @@ function shadeKeyboard(letter, keyColors, currentLvl) {
     let cssValuePrefix = "conic-gradient(";
     let numGrids = keyColors.length;
     let sections = [];
+    let newColors = [];
     let degrees = 0;
     let increment = 360 / numGrids;
     for (let i = 0; i < keyboardButtons.length; i++) {
@@ -164,37 +164,50 @@ function shadeKeyboard(letter, keyColors, currentLvl) {
                     if (oldStyle[j * 2].includes("green")) styleColors.push("green");
                     if (oldStyle[j * 2].includes("yellow")) styleColors.push("yellow");
                     if (oldStyle[j * 2].includes("gray")) styleColors.push("gray");
-                    
-                    if (currentLvl === 2) {
-                        styleColors = styleColors.reverse();
-                    } else if (currentLvl === 3) {
-                        let temp = styleColors.pop();
-                        styleColors.unshift(temp);
-                        [styleColors[2], styleColors[3]] = [styleColors[3], styleColors[2]];
-                    }
                 }
             }
 
             for (let j = 0; j < numGrids; j++){
                 if (styleColors[0]) {
-                    console.log("do we get here");
                     if (styleColors[j] === "green" || keyColors[j] === "green") {
-                        sections.push(`green ${degrees}deg ${degrees + increment}deg`);
+                        
+                        newColors.push("green");
                     }
-                    console.log(styleColors[j], keyColors[j]);
                     if (styleColors[j] === "yellow" && keyColors[j] !== "green") {
-                        sections.push(`yellow ${degrees}deg ${degrees + increment}deg`);
+                        
+                        newColors.push("yellow");
                     }
                     if (styleColors[j] === "gray") {
-                        sections.push(`${keyColors[j]} ${degrees}deg ${degrees + increment}deg`);
+                        
+                        newColors.push(keyColors[j]);
                     }
                 } else {
-                    sections.push(`${keyColors[j]} ${degrees}deg ${degrees + increment}deg`);
+                    newColors.push(keyColors[j]);
                 }
+            }
+            
+            if (currentLvl === 2) {
+                newColors = newColors.reverse();
+            } else if (currentLvl === 3) {
+                // let temp = newColors.pop();
+                // newColors.unshift(temp);
+                // [newColors[2], newColors[3]] = [newColors[3], newColors[2]];
+            }
+            
+            for (let j = 0; j < numGrids; j++) {
+                if (newColors[j] === "green") {
+                    sections.push(`green ${degrees}deg ${degrees + increment}deg`);
+                }
+                if (newColors[j] === "yellow") {
+                    sections.push(`yellow ${degrees}deg ${degrees + increment}deg`);
+                }
+                if (newColors[j] === "gray") {
+                    sections.push(`gray ${degrees}deg ${degrees + increment}deg`);
+                }
+                degrees += increment;
                 if (j === numGrids - 1) {
                     keyboardButtons[i].style.background = cssValuePrefix + sections.join(", ") + ")";
                 }
-                degrees += increment;
             }
         }
     }
@@ -210,8 +223,6 @@ function resetKeyboard() {
 }
 
 function switchGameBoards(gameVars) {
-    console.log("switching boards");
-
     let boardName = "game-board-lvl-2";
     let oldBoardName = "game-board-lvl-1";
     let oldNumGuesses = gameVars.lvl1Guesses;
