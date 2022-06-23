@@ -57,18 +57,30 @@ export function checkGuess(gameVars) {
     let grids = board.children;
     
     let winners;
+    let keyboardColors;
     if (gameVars.currentLevel === 1) {
         winners = gameVars.secretWordsLvl1;
+        keyboardColors = [['gray'], ['gray'], ['gray'], ['gray'], ['gray']];
     } else if (gameVars.currentLevel === 2) {
         winners = gameVars.secretWordsLvl2;
+        keyboardColors = [['gray', 'gray'], 
+            ['gray', 'gray'], 
+            ['gray', 'gray'], 
+            ['gray', 'gray'], 
+            ['gray', 'gray']];
     } else {
         winners = gameVars.secretWordsLvl3;
+        keyboardColors = [['gray', 'gray', 'gray', 'gray'], 
+            ['gray', 'gray', 'gray', 'gray'], 
+            ['gray', 'gray', 'gray', 'gray'], 
+            ['gray', 'gray', 'gray', 'gray'], 
+            ['gray', 'gray', 'gray', 'gray']];
     }
     
     for (let i = 0; i < grids.length; i++) {
         let rows = grids[i].children;
         let row = rows[rows.length - gameVars.guessesRemaining];
-        let colors = ['gray', 'gray', 'gray', 'gray', 'gray'];
+        let guessColors = ['gray', 'gray', 'gray', 'gray', 'gray'];
         let winner = winners[i].slice();
         
         // loop through and change any correctly placed letters to green
@@ -76,8 +88,9 @@ export function checkGuess(gameVars) {
         for (let j = 0; j < 5; j++) {
             let letter = gameVars.currentGuess[j];
             if (letter === winner[j]) {
-                colors[j] = 'green';
+                guessColors[j] = 'green';
                 winner = winner.replace(letter, " ");
+                keyboardColors[j][i] = 'green';
             }
         }
 
@@ -85,18 +98,20 @@ export function checkGuess(gameVars) {
         // remove the letter from the word
         for (let j = 0; j < 5; j++) {
             let letter = gameVars.currentGuess[j];
-            if (colors[j] !== 'green' && winner.includes(letter)) {
-                colors[j] = 'yellow';
+            if (guessColors[j] !== 'green' && winner.includes(letter)) {
+                guessColors[j] = 'yellow';
                 winner = winner.replace(letter, " ");
+                keyboardColors[j][i] = 'yellow';
             }
         }
 
         for (let j = 0; j < 5; j++) {
+            let letter = gameVars.currentGuess[j]
             let delay = 250 * j;
             let box = row.children[j];
             setTimeout( () => {
-                box.style.backgroundColor = colors[j];
-                shadeKeyboard(gameVars.currentGuess[j], colors[j]);
+                box.style.backgroundColor = guessColors[j];
+                shadeKeyboard(letter, keyboardColors[j], gameVars.currentLevel);
             }, delay);
         }
 
@@ -132,18 +147,60 @@ export function checkGuess(gameVars) {
 }
     
 
-function shadeKeyboard(letter, color) {
+function shadeKeyboard(letter, keyColors, currentLvl) {
     let keyboardButtons = document.getElementsByClassName("keyboard-button");
+    let cssValuePrefix = "conic-gradient(";
+    let numGrids = keyColors.length;
+    let sections = [];
+    let degrees = 0;
+    let increment = 360 / numGrids;
     for (let i = 0; i < keyboardButtons.length; i++) {
         if (keyboardButtons[i].textContent === letter) {
-            let oldColor = keyboardButtons[i].style.backgroundColor;
-            if (oldColor === 'green') return;
-            if (oldColor === 'yellow' && color !== 'green') return;
-            keyboardButtons[i].style.backgroundColor = color;
-            break;
+            let oldStyle = keyboardButtons[i].style.background.split(",");
+            let styleColors = [];
+
+            if (oldStyle[0]) {
+                for (let j = 0; j < keyColors.length; j++) {
+                    if (oldStyle[j * 2].includes("green")) styleColors.push("green");
+                    if (oldStyle[j * 2].includes("yellow")) styleColors.push("yellow");
+                    if (oldStyle[j * 2].includes("gray")) styleColors.push("gray");
+                    
+                    if (currentLvl === 2) {
+                        styleColors = styleColors.reverse();
+                    } else if (currentLvl === 3) {
+                        let temp = styleColors.pop();
+                        styleColors.unshift(temp);
+                        [styleColors[2], styleColors[3]] = [styleColors[3], styleColors[2]];
+                    }
+                }
+            }
+
+            for (let j = 0; j < numGrids; j++){
+                if (styleColors[0]) {
+                    console.log("do we get here");
+                    if (styleColors[j] === "green" || keyColors[j] === "green") {
+                        sections.push(`green ${degrees}deg ${degrees + increment}deg`);
+                    }
+                    console.log(styleColors[j], keyColors[j]);
+                    if (styleColors[j] === "yellow" && keyColors[j] !== "green") {
+                        sections.push(`yellow ${degrees}deg ${degrees + increment}deg`);
+                    }
+                    if (styleColors[j] === "gray") {
+                        sections.push(`${keyColors[j]} ${degrees}deg ${degrees + increment}deg`);
+                    }
+                } else {
+                    sections.push(`${keyColors[j]} ${degrees}deg ${degrees + increment}deg`);
+                }
+                if (j === numGrids - 1) {
+                    keyboardButtons[i].style.background = cssValuePrefix + sections.join(", ") + ")";
+                }
+                degrees += increment;
+            }
         }
     }
+
 }
+
 
 function resetKeyboard() {
     let keyboardButtons = document.getElementsByClassName("keyboard-button");
