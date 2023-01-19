@@ -178,9 +178,7 @@ function shadeKeyboard(letter, keyColors, currentLvl) {
                 styleColors.unshift(temp);
                 [styleColors[2], styleColors[3]] = [styleColors[3], styleColors[2]];
             }
-
-            console.log("existing style colors", styleColors);
-            console.log("colors from guess", keyColors);
+            
             for (let j = 0; j < numGrids; j++){
                 if (styleColors[0]) {
                     if (styleColors[j] === "green" || keyColors[j] === "green") {
@@ -199,7 +197,6 @@ function shadeKeyboard(letter, keyColors, currentLvl) {
                     newColors.push(keyColors[j]);
                 }
             }
-            console.log("new colors", newColors);
             
             // now we arrange colors in order of how they need to be applied
             // to the conic-gradient styling
