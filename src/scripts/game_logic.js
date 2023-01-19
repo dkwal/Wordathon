@@ -41,15 +41,24 @@ export function checkGuess(gameVars) {
     }
 
     if (guessString.length !== 5) {
-        notie.alert({
-            type: 3,
-            text: "Word is too short!"
-        });
+        setTimeout(() => {
+            notie.alert({
+                type: 3,
+                text: "Word is too short!",
+                time: 2
+            });
+        }, 0);
         return;
     }
 
     if (!gameVars.guessableWords.includes(guessString)) {
-        alert("Not a valid word!");
+        setTimeout(() => {
+            notie.alert({
+                type: 3,
+                text: "Not a valid word!",
+                time: 2
+            });
+        }, 0);
         return;
     }
     // let row = document.getElementsByClassName("letter-row")[6 - gameVars.guessesRemaining];
@@ -61,24 +70,24 @@ export function checkGuess(gameVars) {
     let winners;
     let keyboardColors;
     if (gameVars.currentLevel === 1) {
-        winners = gameVars.secretWordsLvl1;
+        winners = [...gameVars.secretWordsLvl1];
         keyboardColors = [['gray'], ['gray'], ['gray'], ['gray'], ['gray']];
     } else if (gameVars.currentLevel === 2) {
-        winners = gameVars.secretWordsLvl2;
+        winners = [...gameVars.secretWordsLvl2];
         keyboardColors = [['gray', 'gray'], 
             ['gray', 'gray'], 
             ['gray', 'gray'], 
             ['gray', 'gray'], 
             ['gray', 'gray']];
     } else {
-        winners = gameVars.secretWordsLvl3;
+        winners = [...gameVars.secretWordsLvl3];
         keyboardColors = [['gray', 'gray', 'gray', 'gray'], 
             ['gray', 'gray', 'gray', 'gray'], 
             ['gray', 'gray', 'gray', 'gray'], 
             ['gray', 'gray', 'gray', 'gray'], 
             ['gray', 'gray', 'gray', 'gray']];
     }
-    
+
     for (let i = 0; i < grids.length; i++) {
         let rows = grids[i].children;
         let row = rows[rows.length - gameVars.guessesRemaining];
@@ -128,10 +137,21 @@ export function checkGuess(gameVars) {
 
         if (gameVars.correctCount === 2 ** (gameVars.currentLevel - 1)) {
             if (gameVars.currentLevel === 3) {
-                alert("You beat the game!");
-                return;
+                setTimeout(() => {
+                    notie.alert({
+                        type: 1,
+                        text: "You beat the game! Congratulations!",
+                        time: 5
+                    });
+                }, 0);
             } else {
-                alert("Well done! You're moving on to the next level!");
+                setTimeout(() => {
+                    notie.alert({
+                        type: 1,
+                        text: "Well done! You're moving on to the next level!",
+                        time: 3
+                    });
+                }, 0);
             }
             setTimeout( () => {
                 switchGameBoards(gameVars);
@@ -144,9 +164,32 @@ export function checkGuess(gameVars) {
     gameVars.currentGuess = [];
     gameVars.nextLetterIdx = 0;
 
+    let gameOverMessage = "";
+    if (gameVars.currentLevel === 1) {
+        gameOverMessage = `The secret word was: ${gameVars.secretWordsLvl1[0]}`;
+    } else if (gameVars.currentLevel === 2) {
+        let winnersSpaced = "";
+        gameVars.secretWordsLvl2.forEach(word => {
+            winnersSpaced = winnersSpaced + word + ", ";
+        })
+        winnersSpaced = winnersSpaced.slice(0, -2);
+        gameOverMessage = `The secret words were: ${winnersSpaced}`
+    } else {
+        let winnersSpaced = "";
+        gameVars.secretWordsLvl3.forEach(word => {
+            winnersSpaced = winnersSpaced + word + ", ";
+        })
+        winnersSpaced = winnersSpaced.slice(0, -2);
+        gameOverMessage = `The secret words were: ${winnersSpaced}`
+    }
     if (gameVars.guessesRemaining === 0) {
-        alert("Out of guesses, game over");
-        alert(`The words were ${winners}`);
+        setTimeout(() => {
+            notie.alert({
+                type: 3,
+                text: "Out of guesses, game over. " + gameOverMessage,
+                stay: true
+            });
+        }, 0);
     }
 }
     
