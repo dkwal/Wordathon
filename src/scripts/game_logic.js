@@ -78,7 +78,7 @@ export function checkGuess(gameVars) {
         let rows = grids[i].children;
         let row = rows[rows.length - gameVars.guessesRemaining];
         let guessColors = ['gray', 'gray', 'gray', 'gray', 'gray'];
-        let winner = winners[i].slice();
+        let winner = winners[i];
         
         // loop through and change any correctly placed letters to green
         // remove the letter from the word so it is not considered again
@@ -154,9 +154,10 @@ function shadeKeyboard(letter, keyColors, currentLvl) {
     let newColors = [];
     let degrees = 0;
     let increment = 360 / numGrids;
+
     for (let i = 0; i < keyboardButtons.length; i++) {
         if (keyboardButtons[i].textContent === letter) {
-            let oldStyle = keyboardButtons[i].style.background.split(",");
+            let oldStyle = keyboardButtons[i].style.background.split(", ");
             let styleColors = [];
 
             if (oldStyle[0]) {
@@ -167,6 +168,19 @@ function shadeKeyboard(letter, keyColors, currentLvl) {
                 }
             }
 
+            // styleColors needs to be re-arranged because it is in
+            // order of how the color was applied to the conic-gradient,
+            // not in order of the boards
+            if (currentLvl === 2) {
+                styleColors = styleColors.reverse();
+            } else if (currentLvl === 3) {
+                let temp = styleColors.pop();
+                styleColors.unshift(temp);
+                [styleColors[2], styleColors[3]] = [styleColors[3], styleColors[2]];
+            }
+
+            console.log("existing style colors", styleColors);
+            console.log("colors from guess", keyColors);
             for (let j = 0; j < numGrids; j++){
                 if (styleColors[0]) {
                     if (styleColors[j] === "green" || keyColors[j] === "green") {
@@ -185,13 +199,17 @@ function shadeKeyboard(letter, keyColors, currentLvl) {
                     newColors.push(keyColors[j]);
                 }
             }
+            console.log("new colors", newColors);
             
+            // now we arrange colors in order of how they need to be applied
+            // to the conic-gradient styling
             if (currentLvl === 2) {
                 newColors = newColors.reverse();
             } else if (currentLvl === 3) {
-                // let temp = newColors.pop();
-                // newColors.unshift(temp);
-                // [newColors[2], newColors[3]] = [newColors[3], newColors[2]];
+                // current order: 1234 desired order: 2431
+                let temp = newColors.shift();
+                newColors.push(temp);
+                [newColors[1], newColors[2]] = [newColors[2], newColors[1]];
             }
             
             for (let j = 0; j < numGrids; j++) {
