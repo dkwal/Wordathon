@@ -1,3 +1,5 @@
+import notie from 'notie';
+
 export function insertLetter(gameVars, letter) {
     if (gameVars.nextLetterIdx === 5) {
         return;
@@ -39,7 +41,10 @@ export function checkGuess(gameVars) {
     }
 
     if (guessString.length !== 5) {
-        alert("Word is too short!");
+        notie.alert({
+            type: 3,
+            text: "Word is too short!"
+        });
         return;
     }
 
@@ -178,7 +183,7 @@ function shadeKeyboard(letter, keyColors, currentLvl) {
                 styleColors.unshift(temp);
                 [styleColors[2], styleColors[3]] = [styleColors[3], styleColors[2]];
             }
-            
+
             for (let j = 0; j < numGrids; j++){
                 if (styleColors[0]) {
                     if (styleColors[j] === "green" || keyColors[j] === "green") {

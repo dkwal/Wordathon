@@ -4,8 +4,8 @@ import {getUniqueIndices} from "./scripts/util.js";
 import {initBoard} from "./scripts/board.js";
 import {insertLetter, deleteLetter, checkGuess} from "./scripts/game_logic.js";
 
-// add "/Wordathon/" to beginning of each file before pushing to live
 readTextFiles("https://dkwal.github.io/Wordathon/src/textfiles/winning-words.txt", "https://dkwal.github.io/Wordathon/src/textfiles/guessable-words.txt").then((wordLists) => {
+// readTextFiles("../src/textfiles/winning-words.txt", "../src/textfiles/guessable-words.txt").then((wordLists) => {
     
     // constant game variables
     // need to make into object so we can pass by reference to game_logic functions
