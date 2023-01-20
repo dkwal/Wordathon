@@ -140,6 +140,10 @@ table {
   text-transform: uppercase;
 }
 
+.notie-container div:nth-child(2) {
+  background-color: #E1715B;
+}
+
 nav {
   background-color: #333;
 }

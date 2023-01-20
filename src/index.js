@@ -3,6 +3,7 @@ import {readTextFiles} from "./scripts/word_lists.js";
 import {getUniqueIndices} from "./scripts/util.js";
 import {initBoard} from "./scripts/board.js";
 import {insertLetter, deleteLetter, checkGuess} from "./scripts/game_logic.js";
+import notie from 'notie';
 
 readTextFiles("https://dkwal.github.io/Wordathon/src/textfiles/winning-words.txt", "https://dkwal.github.io/Wordathon/src/textfiles/guessable-words.txt").then((wordLists) => {
 // readTextFiles("../src/textfiles/winning-words.txt", "../src/textfiles/guessable-words.txt").then((wordLists) => {
@@ -38,6 +39,16 @@ readTextFiles("https://dkwal.github.io/Wordathon/src/textfiles/winning-words.txt
     initBoard(LVL_2_GUESSES, 2, true);
     initBoard(LVL_3_GUESSES, 3, true);
     
+    // display instructions
+    setTimeout( () => {
+        notie.force({
+            type: 4,
+            text: "Welcome to Wordathon! Your goal is to guess the secret 5-letter word. A green letter signals the letter is in the word and placed correctly. A yellow letter signals the letter is in the word but placed incorrectly. A gray letter is not present in the word. Type your word or click letters on the keyboard to input your guess.",
+            buttonText: "Click here to get started!"
+        })
+
+    }, 0)
+
     // add event listener for user input
     document.addEventListener("keydown", (e) => {
         if (gameVars.guessesRemaining === 0) {
@@ -61,4 +72,24 @@ readTextFiles("https://dkwal.github.io/Wordathon/src/textfiles/winning-words.txt
             insertLetter(gameVars, pressedKey);
         }
     });
+
+    const keyboard = document.getElementById("keyboard-cont");
+    keyboard.addEventListener("mousedown", e => {
+        if (e.target.matches(".keyboard-button")) {
+            let pressedKey = e.target.innerHTML;
+            if (pressedKey === "Del" && gameVars.nextLetterIdx !== 0) {
+                deleteLetter(gameVars);
+                return;
+            } else if (pressedKey === "Del") {
+                return;
+            } else if (pressedKey === "Enter") {
+                checkGuess(gameVars);
+                return;
+            } else {
+                insertLetter(gameVars, pressedKey);
+                return;
+            }
+        }
+    });
+
 })
