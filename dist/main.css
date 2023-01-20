@@ -59,39 +59,40 @@ table {
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 10px;
 }
 
 #game-board-lvl-2 {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
 }
 
 #game-board-lvl-3 {
   display: flex;
   justify-content: center;
+  width: 40rem;
   flex-wrap: wrap;
-  width: 45rem;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
 }
 
 #grid-1 {
-  padding: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-bottom: 3px;
 }
 
 #grid-2 {
-  padding: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-bottom: 3px;
 }
 
 #grid-3 {
-  padding: 3px;
+  margin: 3px;
 }
 
 #grid-4 {
-  padding: 3px;
+  margin: 3px;
 }
 
 .letter-box {
@@ -100,12 +101,13 @@ table {
   margin: 2px;
   font-size: 2rem;
   font-weight: 700;
-  height: 2.5rem;
-  width: 2.5rem;
+  height: 2.3rem;
+  width: 2.3rem;
   display: flex;
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
+  background-color: white;
 }
 
 .filled-box {
@@ -116,11 +118,25 @@ table {
   display: flex;
 }
 
+.game-board-container {
+  width: 100%;
+  margin-top: 16px;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 2;
+}
+
 #keyboard-cont {
-  margin: 1rem 0;
   display: flex;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-left: 3%;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  z-index: 1;
 }
 
 #keyboard-cont div {
@@ -153,4 +169,9 @@ h1 {
   text-align: center;
   padding: 15px;
   color: white;
+}
+
+.game-container {
+  display: flex;
+  width: 100%;
 }

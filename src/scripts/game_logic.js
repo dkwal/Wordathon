@@ -11,6 +11,10 @@ export function insertLetter(gameVars, letter) {
     for (let i = 0; i < grids.length; i++) {
         let rows = grids[i].children;
         let row = rows[rows.length - gameVars.guessesRemaining];
+        // do not insert letter if the row has been marked with skip-input
+        if (row.className === "letter-row skip-input") {
+            continue;
+        }
         let box = row.children[gameVars.nextLetterIdx];
         box.textContent = letter;
         box.classList.add("filled-box");
@@ -61,8 +65,6 @@ export function checkGuess(gameVars) {
         }, 0);
         return;
     }
-    // let row = document.getElementsByClassName("letter-row")[6 - gameVars.guessesRemaining];
-    // let rightGuess = gameVars.secretWords[0].split("");
 
     let board = document.getElementById(`game-board-lvl-${gameVars.currentLevel}`);
     let grids = board.children;
@@ -91,6 +93,10 @@ export function checkGuess(gameVars) {
     for (let i = 0; i < grids.length; i++) {
         let rows = grids[i].children;
         let row = rows[rows.length - gameVars.guessesRemaining];
+        // skip coloring boxes and checking guess if row is marked with skip-input
+        if (row.className === "letter-row skip-input") {
+            continue;
+        }
         let guessColors = ['gray', 'gray', 'gray', 'gray', 'gray'];
         let winner = winners[i];
         
@@ -128,10 +134,14 @@ export function checkGuess(gameVars) {
             }, delay);
         }
 
-        if (guessString === winners[i]) {
-            // stopInputOnGrid();
+        if (guessString === winners[i] && gameVars.erasableWinners.includes(guessString)) {
+            stopInputOnGrid(grids[i]);
             // prevent the same word from being guessed again
-            winners[i] = "#";
+            gameVars.erasableWinners.forEach((word, i) => {
+                if (word === guessString) {
+                    gameVars.erasableWinners[i] = "#";
+                }
+            })
             gameVars.correctCount += 1;
         }
 
@@ -141,7 +151,7 @@ export function checkGuess(gameVars) {
                     notie.alert({
                         type: 1,
                         text: "You beat the game! Congratulations!",
-                        time: 5
+                        stay: true
                     });
                 }, 0);
             } else {
@@ -336,4 +346,16 @@ function switchGameBoards(gameVars) {
     gameVars.nextLetterIdx = 0;
     gameVars.currentGuess = [];
     gameVars.correctCount = 0;
+}
+
+function stopInputOnGrid(grid) {
+    let rows = grid.children;
+    let rowsArr = Array.from(rows);
+    rowsArr.forEach(row => {
+        let box = row.children[0];
+        if (!box.innerHTML) {
+            row.className = "letter-row skip-input";
+        }
+    })
+
 }

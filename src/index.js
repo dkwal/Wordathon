@@ -24,6 +24,7 @@ readTextFiles("https://dkwal.github.io/Wordathon/src/textfiles/winning-words.txt
         secretWordsLvl1 : SECRET_WORDS.slice(0, 1),
         secretWordsLvl2 : SECRET_WORDS.slice(1, 3),
         secretWordsLvl3 : SECRET_WORDS.slice(3),
+        erasableWinners : [...SECRET_WORDS],
         guessesRemaining : LVL_1_GUESSES,
         currentGuess : [],
         nextLetterIdx : 0,
