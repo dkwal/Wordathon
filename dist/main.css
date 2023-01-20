@@ -69,7 +69,7 @@ table {
 #game-board-lvl-3 {
   display: flex;
   justify-content: center;
-  width: 40rem;
+  width: 37.5rem;
   flex-wrap: wrap;
   margin-left: auto;
   margin-right: auto;
@@ -121,22 +121,14 @@ table {
 .game-board-container {
   width: 100%;
   margin-top: 16px;
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  z-index: 2;
 }
 
 #keyboard-cont {
   display: flex;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin-left: 3%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  width: 100%;
 }
 
 #keyboard-cont div {
@@ -157,21 +149,41 @@ table {
 }
 
 .notie-container div:nth-child(2) {
+  background-color: #57BF57;
+}
+
+.notie-container div:nth-child(3) {
   background-color: #E1715B;
 }
 
 nav {
   background-color: #333;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-middle {
+  display: flex;
+  align-items: center;
 }
 
 h1 {
   font-size: 24px;
   text-align: center;
-  padding: 15px;
+  position: absolute;
+  left: 0;
+  right: 0;
   color: white;
+  padding-left: 16px;
 }
 
 .game-container {
   display: flex;
   width: 100%;
+}
+
+nav i {
+  font-size: 48px;
+  color: white;
+  margin-right: 16px;
 }

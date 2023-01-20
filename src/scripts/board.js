@@ -8,6 +8,14 @@ export function initBoard(numGuesses, level, hidden = false) {
         board = document.getElementById("game-board-lvl-3");
     }
 
+    // remove any children elements of the game board
+    // in case the game is being reset
+    if (board.children) {
+        Array.from(board.children).forEach(child => {
+            child.remove();
+        })
+    }
+
     let numBoards = 2 ** (level - 1);
     let boardTracker = 1;
     while(numBoards > 0) {

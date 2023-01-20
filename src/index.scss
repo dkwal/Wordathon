@@ -8,16 +8,32 @@
 
 nav {
     background-color: #333;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-middle {
+    display: flex;
+    align-items: center;
 }
 
 h1 {
     font-size: 24px;
     text-align: center;
-    padding: 15px;
-    color: white
+    position: absolute;
+    left: 0;
+    right: 0;
+    color: white;
+    padding-left: 16px;
 }
 
 .game-container {
     display: flex;
     width: 100%;
+}
+
+nav i {
+    font-size: 48px;
+    color: white;
+    margin-right: 16px;
 }

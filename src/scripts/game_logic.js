@@ -1,4 +1,6 @@
 import notie from 'notie';
+import { getUniqueIndices } from './util';
+import { initBoard } from './board';
 
 export function insertLetter(gameVars, letter) {
     if (gameVars.nextLetterIdx === 5) {
@@ -147,13 +149,24 @@ export function checkGuess(gameVars) {
 
         if (gameVars.correctCount === 2 ** (gameVars.currentLevel - 1)) {
             if (gameVars.currentLevel === 3) {
+                gameVars.gameOver = true;
                 setTimeout(() => {
                     notie.alert({
                         type: 1,
                         text: "You beat the game! Congratulations!",
-                        stay: true
+                        time: 4
                     });
                 }, 0);
+                setTimeout(() => {
+                    notie.confirm({
+                        text: "Would you like to play again?",
+                        submitText: "Let's go!",
+                        cancelText: "No thanks.",
+                        submitCallback: () => {
+                            resetGame(gameVars);
+                        }
+                    })
+                }, 4250)
             } else {
                 setTimeout(() => {
                     notie.alert({
@@ -193,13 +206,24 @@ export function checkGuess(gameVars) {
         gameOverMessage = `The secret words were: ${winnersSpaced}`
     }
     if (gameVars.guessesRemaining === 0) {
+        gameVars.gameOver = true;
         setTimeout(() => {
             notie.alert({
                 type: 3,
                 text: "Out of guesses, game over. " + gameOverMessage,
-                stay: true
+                time: 4
             });
         }, 0);
+        setTimeout(() => {
+            notie.confirm({
+                text: "Would you like to play again?",
+                submitText: "Let's go!",
+                cancelText: "No thanks.",
+                submitCallback: () => {
+                    resetGame(gameVars);
+                }
+            })
+        }, 4250)
     }
 }
     
@@ -357,5 +381,44 @@ function stopInputOnGrid(grid) {
             row.className = "letter-row skip-input";
         }
     })
+
+}
+
+function resetGame(gameVars) {
+    const secretWords = getUniqueIndices(7, gameVars.winningWords.length).map (idx => {
+        return gameVars.winningWords[idx];
+    })
+    const lvl1Guesses = 6;
+    const lvl2Guesses = 7;
+    const lvl3Guesses = 9;
+
+    // reset gameVars
+    gameVars.secretWordsLvl1 = secretWords.slice(0, 1);
+    gameVars.secretWordsLvl2 = secretWords.slice(1, 3);
+    gameVars.secretWordsLvl3 = secretWords.slice(3);
+    gameVars.erasableWinners = [...secretWords];
+    gameVars.guessesRemaining = lvl1Guesses;
+    gameVars.currentGuess = [];
+    gameVars.nextLetterIdx = 0;
+    gameVars.currentLevel = 1;
+    gameVars.correctCount = 0;
+    gameVars.gameOver = false;
+
+    // reset game boards
+    initBoard(lvl1Guesses, 1);
+    initBoard(lvl2Guesses, 2, true);
+    initBoard(lvl3Guesses, 3, true);
+
+    // reset keyboard
+    const keyboard = document.getElementById("keyboard-cont");
+    const rows = keyboard.children;
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const buttons = row.children;
+        const buttonsArr = Array.from(buttons);
+        buttonsArr.forEach(button => {
+            button.style = "";
+        })
+    }
 
 }

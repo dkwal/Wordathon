@@ -32,7 +32,8 @@ readTextFiles("https://dkwal.github.io/Wordathon/src/textfiles/winning-words.txt
         correctCount : 0,
         lvl1Guesses: LVL_1_GUESSES,
         lvl2Guesses: LVL_2_GUESSES,
-        lvl3Guesses: LVL_3_GUESSES
+        lvl3Guesses: LVL_3_GUESSES,
+        gameOver: false
     }
     
     // initialize level 1 board
@@ -77,6 +78,9 @@ readTextFiles("https://dkwal.github.io/Wordathon/src/textfiles/winning-words.txt
     const keyboard = document.getElementById("keyboard-cont");
     keyboard.addEventListener("mousedown", e => {
         if (e.target.matches(".keyboard-button")) {
+            if (gameVars.gameOver) {
+                return;
+            }
             let pressedKey = e.target.innerHTML;
             if (pressedKey === "Del" && gameVars.nextLetterIdx !== 0) {
                 deleteLetter(gameVars);

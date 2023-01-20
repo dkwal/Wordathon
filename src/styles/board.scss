@@ -12,7 +12,7 @@
   #game-board-lvl-3 {
       display: flex;
       justify-content: center;
-      width: 40rem;
+      width: 37.5rem;
       flex-wrap: wrap;
       margin-left: auto;
       margin-right: auto;
@@ -64,8 +64,4 @@
   .game-board-container {
     width: 100%;
     margin-top: 16px;
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    z-index: 2;
   }
