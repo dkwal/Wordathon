@@ -62,7 +62,7 @@ readTextFiles("https://dkwal.github.io/Wordathon/src/textfiles/winning-words.txt
             return;
         }
     
-        if (pressedKey === "Enter") {
+        if (pressedKey === "Enter" && !gameVars.gameOver) {
             checkGuess(gameVars);
             return;
         }

@@ -97,7 +97,6 @@ export function checkGuess(gameVars) {
         let row = rows[rows.length - gameVars.guessesRemaining];
         // skip coloring boxes and checking guess if row is marked with skip-input
         if (row.className === "letter-row skip-input") {
-            console.log("we're skipping this iteration");
             continue;
         }
         let guessColors = ['gray', 'gray', 'gray', 'gray', 'gray'];
