@@ -163,7 +163,7 @@ export function checkGuess(gameVars) {
                             resetGame(gameVars);
                         }
                     })
-                }, 0)
+                }, 4250)
             } else {
                 setTimeout(() => {
                     notie.alert({
