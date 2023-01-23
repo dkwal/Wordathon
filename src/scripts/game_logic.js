@@ -97,6 +97,7 @@ export function checkGuess(gameVars) {
         let row = rows[rows.length - gameVars.guessesRemaining];
         // skip coloring boxes and checking guess if row is marked with skip-input
         if (row.className === "letter-row skip-input") {
+            console.log("we're skipping this iteration");
             continue;
         }
         let guessColors = ['gray', 'gray', 'gray', 'gray', 'gray'];
@@ -125,14 +126,10 @@ export function checkGuess(gameVars) {
         }
 
         for (let j = 0; j < 5; j++) {
-            let letter = gameVars.currentGuess[j]
             let delay = 250 * j;
             let box = row.children[j];
             setTimeout( () => {
                 box.style.backgroundColor = guessColors[j];
-                if (i === grids.length - 1) {
-                    shadeKeyboard(letter, keyboardColors[j], gameVars.currentLevel);
-                }
             }, delay);
         }
 
@@ -183,6 +180,14 @@ export function checkGuess(gameVars) {
             return;
         }
     }
+    for (let j = 0; j < 5; j++) {
+        let letter = gameVars.currentGuess[j]
+        let delay = 250 * j;
+        setTimeout( () => {
+            shadeKeyboard(letter, keyboardColors[j], gameVars.currentLevel);
+        }, delay);
+    }
+
     gameVars.guessesRemaining -= 1;
     gameVars.currentGuess = [];
     gameVars.nextLetterIdx = 0;
