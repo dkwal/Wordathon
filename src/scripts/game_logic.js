@@ -163,7 +163,7 @@ export function checkGuess(gameVars) {
                             resetGame(gameVars);
                         }
                     })
-                }, 4250)
+                }, 0)
             } else {
                 setTimeout(() => {
                     notie.alert({
@@ -176,8 +176,7 @@ export function checkGuess(gameVars) {
             setTimeout( () => {
                 switchGameBoards(gameVars);
                 resetKeyboard();
-            }, 1250);
-            return;
+            }, 3000);
         }
     }
     for (let j = 0; j < 5; j++) {
@@ -191,6 +190,10 @@ export function checkGuess(gameVars) {
     gameVars.guessesRemaining -= 1;
     gameVars.currentGuess = [];
     gameVars.nextLetterIdx = 0;
+
+    if (gameVars.correctCount === 2 ** (gameVars.currentLevel - 1)) {
+        return;
+    }
 
     let gameOverMessage = "";
     if (gameVars.currentLevel === 1) {
