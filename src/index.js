@@ -45,7 +45,7 @@ readTextFiles("https://dkwal.github.io/Wordathon/src/textfiles/winning-words.txt
     setTimeout( () => {
         notie.force({
             type: 4,
-            text: "Welcome to Wordathon! Your goal is to guess the secret 5-letter word. A green letter signals the letter is in the word and placed correctly. A yellow letter signals the letter is in the word but placed incorrectly. A gray letter is not present in the word. Type your word or click letters on the keyboard to input your guess.",
+            text: "Welcome to Wordathon! Your goal is to guess the secret 5-letter word. A green letter signals the letter is in the word and placed correctly. A yellow letter signals the letter is in the word but placed incorrectly. A gray letter is not present in the word. Type your word or click letters on the keyboard to input your guess. Can you beat all three levels?",
             buttonText: "Click here to get started!"
         })
 

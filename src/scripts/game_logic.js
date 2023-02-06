@@ -174,7 +174,9 @@ export function checkGuess(gameVars) {
             }
             setTimeout( () => {
                 switchGameBoards(gameVars);
-                resetKeyboard();
+                if (!gameVars.gameOver) {
+                    resetKeyboard();
+                }
             }, 3000);
         }
     }
@@ -417,15 +419,5 @@ function resetGame(gameVars) {
     initBoard(lvl3Guesses, 3, true);
 
     // reset keyboard
-    const keyboard = document.getElementById("keyboard-cont");
-    const rows = keyboard.children;
-    for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        const buttons = row.children;
-        const buttonsArr = Array.from(buttons);
-        buttonsArr.forEach(button => {
-            button.style = "";
-        })
-    }
-
+    resetKeyboard();
 }
